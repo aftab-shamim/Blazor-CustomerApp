@@ -1,0 +1,68 @@
+﻿@page "/customers/{id:int}"
+@inject HttpClient http
+@inject NavigationManager NavigationManager
+
+<h3>Customer Details</h3>
+<hr />
+
+@if (customerDTO != null)
+{
+    <h5>Customer Name: @customerDTO.Name</h5>
+    <h5>Age: @customerDTO.Age</h5>    
+    <table class="table">
+        <thead>
+
+            <tr>
+                <th>Account Number</th>
+                <th>Account Type</th>
+                <th>Total Balance</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var account in accountsInfoDTOs)
+            {
+                <tr>
+                    <td>@account.AccountNumber</td>
+                    <td>@account.AccountType</td>
+                    <td>@account.TotalBalance</td>
+                </tr>
+            }
+            <tr>
+                <td></td>
+                <td><strong>Grand Total Balance</strong></td>
+                <td><strong>@CalculateTotalBalance()</strong></td>
+            </tr>
+        </tbody>
+    </table>
+}
+else
+{
+    <p>Loading...</p>
+}
+
+@code {
+
+    [Parameter]
+    public int id { get; set; }
+    CustomerDTO customerDTO = new CustomerDTO();
+    List<AccountsInfoDTO>  accountsInfoDTOs = new List<AccountsInfoDTO>();
+
+    decimal? CalculateTotalBalance()
+    {
+        decimal? totalBalance = 0;
+        foreach (var accountInfo in accountsInfoDTOs)
+        {
+            totalBalance = totalBalance + accountInfo.TotalBalance;
+        }
+        return totalBalance;
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        customerDTO = await http.GetFromJsonAsync<CustomerDTO>("api/customers/" + id);
+        accountsInfoDTOs = customerDTO.AccountsInfoDTO;
+
+    }
+
+}

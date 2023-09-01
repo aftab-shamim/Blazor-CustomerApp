@@ -1,0 +1,48 @@
+﻿@page "/customers"
+@inject HttpClient http
+
+<h3>List of Customer</h3>
+
+
+@if (customersDto == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table table-striped align-middle table-bordered">
+        <thead class="table-success">
+            <tr>
+                <th>Customer Id</th>
+                <th>Name</th>
+                <th>Age</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var customer in customersDto)
+            {
+            <tr>
+                <td>@customer.Id</td>
+                <td>@customer.Name</td>
+                <td>@customer.Age</td>
+                <td>
+                    <a href='/customers/@customer.Id' class="btn btn-outline-secondary" role="button">
+                        Detail
+                    </a>
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+}
+
+
+@code {
+    private List<CustomerDTO> customersDto;
+
+    protected override async Task OnInitializedAsync()
+    {
+        customersDto = await http.GetFromJsonAsync<List<CustomerDTO>>("api/customers");
+    }
+}

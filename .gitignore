@@ -1,0 +1,15 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs
+/CityBank.Api/obj
+/CityBank.Api/bin/Debug/net5.0
+/CityBank.Data/obj
+/CityBank.Data/bin/Debug/net5.0
+/CityBank.Models/obj
+/CityBank.Models/bin/Debug/netcoreapp3.1
+/CityBank.Service/obj
+/CityBank.Service/bin/Debug/net5.0
+/CityBank.Web/obj
+/CityBank.Web/bin/Debug/net5.0
